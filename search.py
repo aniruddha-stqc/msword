@@ -12,8 +12,9 @@ document = Document("test_report_wbsamb_permit_generation_Cycle_2.0.docx")
 # Read the test report table
 test_report = document.tables[5]
 
-# Initialize counters to zero
+# Initialize Cycle 1 counters to zero
 cycle1_complied = cycle1_notcomplied_inconclusive = cycle1_notapplicable = 0
+# Initialize Cycle 2 counters to zero
 cycle2_complied = cycle2_notcomplied_inconclusive = cycle2_notapplicable = 0
 
 # Read through the rows of the test report table
@@ -21,24 +22,26 @@ for row in test_report.rows:
 
     # Stripping everything but alphanumeric chars from a string in Python
     status = re.sub(r'\W+', '', row.cells[2].text).lower()
-    print(row.cells[2].text)
-    print("\n")
-    # Keep a count of statuses
+    #print(row.cells[2].text)
+
+    # Keep a count of Cycle 1 statuses
     if status.find('cycle1complied') != -1:
         cycle1_complied = cycle1_complied + 1
-    if status.find('cycle1notcomplied') != -1:
+    elif status.find('cycle1notcomplied') != -1:
         cycle1_notcomplied_inconclusive = cycle1_notcomplied_inconclusive + 1
-    if status.find('cycle1inconclusive') != -1:
+    elif status.find('cycle1inconclusive') != -1:
         cycle1_notcomplied_inconclusive = cycle1_notcomplied_inconclusive + 1
-    if status.find('cycle1notapplicable') != -1:
+    elif status.find('cycle1notapplicable') != -1:
         cycle1_notapplicable = cycle1_notapplicable + 1
+
+    # Keep a count of Cycle 2 statuses
     if status.find('cycle2complied') != -1:
         cycle2_complied = cycle2_complied + 1
-    if status.find('cycle2notcomplied') != -1:
+    elif status.find('cycle2notcomplied') != -1:
         cycle2_notcomplied_inconclusive = cycle2_notcomplied_inconclusive + 1
-    if status.find('cycle2inconclusive') != -1:
+    elif status.find('cycle2inconclusive') != -1:
         cycle2_notcomplied_inconclusive = cycle2_notcomplied_inconclusive + 1
-    if status.find('cycle2notapplicable') != -1:
+    elif status.find('cycle2notapplicable') != -1:
         cycle2_notapplicable = cycle2_notapplicable + 1
 
 # Create an excel workbook of compliance status

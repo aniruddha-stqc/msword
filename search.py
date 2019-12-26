@@ -1,4 +1,4 @@
-# Import the module
+# Import the modules
 import re
 from docx import *
 import xlsxwriter
@@ -18,9 +18,11 @@ cycle2_complied = cycle2_notcomplied_inconclusive = cycle2_notapplicable = 0
 
 # Read through the rows of the test report table
 for row in test_report.rows:
+
     # Stripping everything but alphanumeric chars from a string in Python
     status = re.sub(r'\W+', '', row.cells[2].text).lower()
-
+    print(row.cells[2].text)
+    print("\n")
     # Keep a count of statuses
     if status.find('cycle1complied') != -1:
         cycle1_complied = cycle1_complied + 1

@@ -65,7 +65,7 @@ def count(test_report_table):
     worksheet.write(excel_row, 4, cycle1_notcomplied_inconclusive)
     worksheet.write(excel_row, 5, cycle1_notapplicable)
 
-    if(cycle2_complied + cycle2_notcomplied_inconclusive + cycle2_notapplicable != 0):
+    if (cycle2_complied + cycle2_notcomplied_inconclusive + cycle2_notapplicable != 0):
         # Cycle 2 row of the excel sheet
         excel_row = excel_row + 1
         worksheet.write(excel_row, 0, "Cycle-2")
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # Note start time
     time_start = datetime.datetime.now()
     docx_file = "test_report_wbsamb_checkpost_verification_Cycle_2.0.docx"  # sys.argv[1]
-    #report_cycle = 2  # sys.argv[2]
+    # report_cycle = 2  # sys.argv[2]
     # Open the docx file
     document = Document(docx_file)
     start_count = False
@@ -100,7 +100,7 @@ if __name__ == "__main__":
                 # Set start count flag
                 start_count = True
         # If start count flag is set
-        if start_count == True:
+        if start_count:
             # If the element is table
             if isinstance(child, CT_Tbl):
                 # extract the table
@@ -109,4 +109,3 @@ if __name__ == "__main__":
                 count(table)
                 # Terminate loop
                 break
-

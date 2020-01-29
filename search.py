@@ -1,11 +1,11 @@
 # Import the modules
-import re
-from docx import *
-import xlsxwriter
 import datetime
+import re
 import sys
-from docx.oxml.text.paragraph import CT_P
+import xlsxwriter
+from docx import *
 from docx.oxml.table import CT_Tbl
+from docx.oxml.text.paragraph import CT_P
 from docx.table import Table
 from docx.text.paragraph import Paragraph
 
@@ -85,7 +85,8 @@ def count(test_report_table):
 if __name__ == "__main__":
     # Note start time
     time_start = datetime.datetime.now()
-    docx_file = "test_report_wbsamb_checkpost_verification_Cycle_2.0.docx"  # sys.argv[1]
+    # Help: python search.py <absolutepath>/test_report_wbsamb_checkpost_verification_Cycle_1.0.docx
+    docx_file = sys.argv[1]
     # report_cycle = 2  # sys.argv[2]
     # Open the docx file
     document = Document(docx_file)

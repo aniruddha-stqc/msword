@@ -4,6 +4,10 @@ from docx import *
 import xlsxwriter
 import datetime
 import sys
+from docx.oxml.text.paragraph import CT_P
+from docx.oxml.table import CT_Tbl
+from docx.table import Table
+from docx.text.paragraph import Paragraph
 
 
 def count(test_report_table):
@@ -14,7 +18,7 @@ def count(test_report_table):
 
     # Read through the rows of the test report table
     for row in test_report_table.rows:
-        #print(row.cells[0].text)
+        # print(row.cells[0].text)
         # Stripping everything but keeping only alphanumeric chars from a string
         status = re.sub(r'\W+', '', row.cells[2].text).lower()
         # print(row.cells[2].text)
@@ -61,14 +65,15 @@ def count(test_report_table):
     worksheet.write(excel_row, 4, cycle1_notcomplied_inconclusive)
     worksheet.write(excel_row, 5, cycle1_notapplicable)
 
-    # Cycle 2 row of the excel sheet
-    excel_row = excel_row + 1
-    worksheet.write(excel_row, 0, "Cycle-2")
-    worksheet.write(excel_row, 1, "DD-MMM-YYYY")
-    worksheet.write(excel_row, 2, cycle2_complied + cycle2_notcomplied_inconclusive + cycle2_notapplicable)
-    worksheet.write(excel_row, 3, cycle2_complied)
-    worksheet.write(excel_row, 4, cycle2_notcomplied_inconclusive)
-    worksheet.write(excel_row, 5, cycle2_notapplicable)
+    if(cycle2_complied + cycle2_notcomplied_inconclusive + cycle2_notapplicable != 0):
+        # Cycle 2 row of the excel sheet
+        excel_row = excel_row + 1
+        worksheet.write(excel_row, 0, "Cycle-2")
+        worksheet.write(excel_row, 1, "DD-MMM-YYYY")
+        worksheet.write(excel_row, 2, cycle2_complied + cycle2_notcomplied_inconclusive + cycle2_notapplicable)
+        worksheet.write(excel_row, 3, cycle2_complied)
+        worksheet.write(excel_row, 4, cycle2_notcomplied_inconclusive)
+        worksheet.write(excel_row, 5, cycle2_notapplicable)
 
     # Close workbook
     workbook.close()
@@ -77,24 +82,31 @@ def count(test_report_table):
         (datetime.datetime.now() - time_start).total_seconds()) + " seconds")
 
 
-def main():
-    #print( (list(document.tables[6].rows[0])) )
-    print("report_cycle", report_cycle)
-    # Read the test report table
-    if (report_cycle == 1):
-        count(document.tables[4])
-    if(report_cycle == 2):
-        count(document.tables[5])
-
-
-
 if __name__ == "__main__":
     # Note start time
     time_start = datetime.datetime.now()
-    docx_file = "test_report_wbsamb_checkpost_verification_Cycle_1.0.docx"#sys.argv[1]
-    report_cycle = 1#sys.argv[2]
+    docx_file = "test_report_wbsamb_checkpost_verification_Cycle_2.0.docx"  # sys.argv[1]
+    #report_cycle = 2  # sys.argv[2]
     # Open the docx file
     document = Document(docx_file)
-    main()
-
+    start_count = False
+    # select only paragraphs or table nodes
+    for child in document.element.body.xpath('w:p | w:tbl'):
+        # Read paragraph
+        if isinstance(child, CT_P):
+            paragraph = Paragraph(child, document)
+            # If paragraph contains text "Test Report Summary"
+            if paragraph.text == "Test Report Summary":
+                # Set start count flag
+                start_count = True
+        # If start count flag is set
+        if start_count == True:
+            # If the element is table
+            if isinstance(child, CT_Tbl):
+                # extract the table
+                table = Table(child, document)
+                # count the table statuses
+                count(table)
+                # Terminate loop
+                break
 

@@ -44,9 +44,9 @@ def count(test_report_table):
             cycle2_notapplicable = cycle2_notapplicable + 1
 
     # Create an excel workbook of compliance status
-    workbook = xlsxwriter.Workbook("Compliance Status.xlsx")
+    workbook = xlsxwriter.Workbook("ComplianceStatus.xlsx")
     # Create an excel sheet of compliance status
-    worksheet = workbook.add_worksheet("Compliance Status")
+    worksheet = workbook.add_worksheet("ComplianceStatus")
     # Header row of the excel sheet
     excel_row = 0
     worksheet.write(excel_row, 0, "Cycle")
@@ -78,7 +78,7 @@ def count(test_report_table):
     # Close workbook
     workbook.close()
 
-    print("Successfully generated \"Compliance Status.xlsx\" in : " + str(
+    print("Successfully generated \"ComplianceStatus.xlsx\" in : " + str(
         (datetime.datetime.now() - time_start).total_seconds()) + " seconds")
 
 

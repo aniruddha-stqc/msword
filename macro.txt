@@ -1,0 +1,24 @@
+Sub status_count()
+'
+' status_count Macro
+'
+'
+
+
+Dim RetVal
+Dim search_command As String
+Dim search_file As String
+Dim shell_command As String
+
+search_command = "T:\CC-Aniruddha\statuscount\search.exe"
+
+search_file = ActiveDocument.FullName
+
+shell_command = search_command & " " & """" & search_file & """"
+
+' MsgBox (shell_command)
+' Execute the command
+RetVal = Shell(shell_command, vbNormalFocus)
+
+
+End Sub
